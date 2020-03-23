@@ -47,6 +47,31 @@
     self.scrollView.contentInset = UIEdgeInsetsMake(74, 0, 54, 0);
 }
 
+//①bonus设置启动页淡出效果
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self launchAnimation];
+}
+
+#pragma mark - Private Methods
+//②bonus设置启动页淡出效果
+- (void)launchAnimation
+{
+    UIViewController *vc = [[UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil] instantiateViewControllerWithIdentifier:@"launch"];
+    UIView *launchView = vc.view;
+    UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+    launchView.frame = [UIApplication sharedApplication].keyWindow.frame;
+    [mainWindow addSubview:launchView];
+    
+    [UIView animateWithDuration:3.0f delay:0.5f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        launchView.alpha = 0.0f;
+        launchView.layer.transform = CATransform3DScale(CATransform3DIdentity, 2.0f, 2.0f, 1.0f);
+    } completion:^(BOOL finished) {
+        [launchView removeFromSuperview];
+    }];
+}
+
 //toast提示
 - (void)makeToast:(NSString *)message
 {
